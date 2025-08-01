@@ -1,13 +1,17 @@
 {
-  "name": "my-quran-website",
+  "name": "quran-web-app",
   "version": "1.0.0",
-  "description": "A professional white and green website for the Holy Quran.",
+  "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "axios": "^1.11.0",
+    "axios": "^1.6.8",
     "express": "^4.19.2"
   }
 }
