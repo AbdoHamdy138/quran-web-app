@@ -17,12 +17,14 @@
                 <a href="/"><i class="fas fa-home"></i> Home</a>
             </div>
             <div class="surah-header-controls">
-                <!-- Translation Toggle -->
+                <button class="control-button" id="font-toggle">
+                    <i class="fas fa-font"></i>
+                    <span>تغيير الخط</span>
+                </button>
                 <button class="control-button" id="translation-toggle" data-state="hidden">
                     <i class="fas fa-book"></i>
                     <span>الترجمة</span>
                 </button>
-                <!-- Audio Player -->
                 <button class="control-button" id="audio-toggle">
                     <i class="fas fa-play"></i>
                     <span>تشغيل الصوت</span>
@@ -31,48 +33,56 @@
         </div>
     </header>
 
-    <div class="main-content-single-surah">
-        <div class="surah-info">
-            <h1 class="surah-title-arabic"><%= surah.name %></h1>
-            <div class="surah-title-english">
-                <p><%= surah.englishName %> - <%= surah.englishNameTranslation %></p>
+    <div class="main-container">
+        <div class="main-content-single-surah">
+            <div class="surah-info">
+                <h1 class="surah-title-arabic"><%= surah.name %></h1>
+                <div class="surah-title-english">
+                    <p><%= surah.englishName %> - <%= surah.englishNameTranslation %></p>
+                </div>
+                <div class="surah-details">
+                    <span><%= surah.revelationType %></span> |
+                    <span><%= surah.numberOfAyahs %> Ayahs</span>
+                </div>
             </div>
-            <div class="surah-details">
-                <span><%= surah.revelationType %></span> |
-                <span><%= surah.numberOfAyahs %> Ayahs</span>
+
+            <% if (surah.number !== 1 && surah.number !== 9) { %>
+                <div class="bismillah">
+                    <p>بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
+                </div>
+            <% } %>
+
+            <div class="ayah-container">
+                <% surah.ayahs.forEach(ayah => { %>
+                    <div class="ayah" id="ayah-<%= ayah.numberInSurah %>">
+                        <div class="ayah-text-wrapper">
+                            <div class="ayah-text">
+                                <span><%= ayah.text %></span>
+                                <span class="ayah-number"><%= ayah.numberInSurah %></span>
+                            </div>
+                            <button class="explain-button" data-ayah-number="<%= ayah.numberInSurah %>" data-surah-number="<%= surah.number %>">
+                                ✨ تفسير الآية
+                            </button>
+                        </div>
+                        <div class="ayah-translation" style="display: none;">
+                            <!-- Translation will be loaded here by JavaScript -->
+                        </div>
+                        <div class="ayah-explanation" id="explanation-<%= ayah.numberInSurah %>">
+                            <!-- Explanation will be loaded here by JavaScript -->
+                        </div>
+                    </div>
+                <% }); %>
             </div>
         </div>
-
-        <!-- Bismillah, only for surahs 2-114 -->
-        <% if (surah.number !== 1 && surah.number !== 9) { %>
-            <div class="bismillah">
-                <p>بِسْمِ ٱللَّهِ ٱلرَّحْمَـٰنِ ٱلرَّحِيمِ</p>
-            </div>
-        <% } %>
-
-        <div class="ayah-container">
-            <% surah.ayahs.forEach(ayah => { %>
-                <div class="ayah" id="ayah-<%= ayah.numberInSurah %>">
-                    <div class="ayah-text-wrapper">
-                        <div class="ayah-text">
-                            <span><%= ayah.text %></span>
-                            <span class="ayah-number"><%= ayah.numberInSurah %></span>
-                        </div>
-                        <!-- New Gemini LLM Explanation button -->
-                        <button class="explain-button" data-ayah-number="<%= ayah.numberInSurah %>" data-surah-number="<%= surah.number %>">
-                            ✨ تفسير الآية
-                        </button>
-                    </div>
-                    <!-- This div will hold the translation -->
-                    <div class="ayah-translation" style="display: none;">
-                        <!-- Translation will be loaded here by JavaScript -->
-                    </div>
-                    <!-- This div will hold the Gemini LLM explanation -->
-                    <div class="ayah-explanation" id="explanation-<%= ayah.numberInSurah %>">
-                        <!-- Explanation will be loaded here by JavaScript -->
-                    </div>
-                </div>
-            <% }); %>
+        <div class="sidebar">
+            <h3 class="sidebar-title">تصفح السورة</h3>
+            <ul class="ayah-jump-list">
+                <% surah.ayahs.forEach(ayah => { %>
+                    <li>
+                        <a href="#ayah-<%= ayah.numberInSurah %>">آية <%= ayah.numberInSurah %></a>
+                    </li>
+                <% }); %>
+            </ul>
         </div>
     </div>
 

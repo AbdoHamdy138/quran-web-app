@@ -4,10 +4,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const ayahContainer = document.querySelector('.ayah-container');
     const translationToggle = document.getElementById('translation-toggle');
     const audioToggle = document.getElementById('audio-toggle');
-
+    const fontToggle = document.getElementById('font-toggle'); // New font toggle button
+    const ayahTexts = document.querySelectorAll('.ayah-text');
     let allSurahs = [];
     let translationCache = {};
     let isTranslationVisible = false;
+    let currentFont = 'Lateef';
 
     // --- Search functionality for the homepage ---
     async function fetchAllSurahsAndInitializeSearch() {
@@ -25,17 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
             allSurahs = data.data; // Store the surah list
             console.log('Successfully fetched and stored', allSurahs.length, 'surahs.');
             
-            // Re-render the grid with the full list of surahs after fetch
             renderSurahGrid(allSurahs);
 
-            // Add the event listener ONLY after data is loaded and rendered
             searchInput.addEventListener('keyup', handleSearch);
             console.log('Search functionality initialized. Keyup listener attached.');
         } catch (error) {
             console.error('Error fetching surah list:', error);
-            // If fetch fails, we still want to attach the listener but it won't filter anything.
             searchInput.addEventListener('keyup', () => {
-                renderSurahGrid([]); // Show nothing if the fetch failed.
+                renderSurahGrid([]);
             });
         }
     }
@@ -79,7 +78,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Gemini LLM Ayah Explanation functionality for surah pages ---
     async function fetchAyahExplanation(ayahText, ayahExplanationDiv) {
-        // Show a loading state
         ayahExplanationDiv.style.display = 'block';
         ayahExplanationDiv.classList.add('loading');
         ayahExplanationDiv.innerHTML = '';
@@ -141,19 +139,33 @@ document.addEventListener('DOMContentLoaded', () => {
             translationDivs.forEach(div => div.style.display = 'none');
         }
     }
+    
+    function toggleFont() {
+        if (currentFont === 'Lateef') {
+            ayahTexts.forEach(textElement => {
+                textElement.classList.add('font-style-2');
+            });
+            currentFont = 'Scheherazade New';
+            fontToggle.querySelector('span').textContent = 'تغيير الخط';
+        } else {
+            ayahTexts.forEach(textElement => {
+                textElement.classList.remove('font-style-2');
+            });
+            currentFont = 'Lateef';
+            fontToggle.querySelector('span').textContent = 'تغيير الخط';
+        }
+    }
 
     // --- Main Initialization Logic ---
     if (surahGrid && searchInput) {
-        // Initialize for homepage
         fetchAllSurahsAndInitializeSearch();
     }
+
     if (ayahContainer) {
-        // Initialize for surah pages
         const surahNumber = parseInt(window.location.pathname.split('/').pop(), 10);
         let audio = null;
         let isAudioPlaying = false;
 
-        // Attach event listeners for LLM explanation buttons
         document.querySelectorAll('.explain-button').forEach(button => {
             button.addEventListener('click', async () => {
                 const ayahNumber = button.dataset.ayahNumber;
@@ -161,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const ayahText = ayahDiv.querySelector('.ayah-text span').textContent;
                 const explanationDiv = document.getElementById(`explanation-${ayahNumber}`);
                 
-                // Toggle explanation visibility
                 if (explanationDiv.style.display === 'block') {
                     explanationDiv.style.display = 'none';
                 } else {
@@ -170,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Attach event listener for translation toggle
         if (translationToggle) {
             translationToggle.addEventListener('click', async () => {
                 if (!translationCache[surahNumber]) {
@@ -184,8 +194,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleTranslation();
             });
         }
+        
+        if (fontToggle) {
+            fontToggle.addEventListener('click', toggleFont);
+        }
 
-        // Attach event listener for audio toggle
         if (audioToggle) {
             audioToggle.addEventListener('click', () => {
                 if (!audio) {

@@ -36,7 +36,7 @@ a:hover {
     color: var(--text-light);
     padding: 1.5rem 0;
     border-bottom: 1px solid var(--border-color);
-    position: sticky;
+    position: sticky; /* The key change to fix the header */
     top: 0;
     z-index: 1000;
 }
@@ -116,13 +116,20 @@ a:hover {
 }
 
 /* --- Main Content Layouts --- */
-.main-content-grid, .main-content-single-surah {
+.main-container {
+    display: flex;
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 20px;
+    gap: 30px;
+}
+
+.main-content-grid {
+    flex-grow: 1;
 }
 
 .main-content-single-surah {
+    flex-grow: 1;
     background-color: var(--card-background);
     border-radius: 12px;
     padding: 40px;
@@ -260,12 +267,25 @@ a:hover {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+.ayah-text-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Changed to flex-start for better alignment */
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
 .ayah-text {
     font-family: 'Lateef', serif;
     font-size: 2rem;
     line-height: 2.5;
     position: relative;
     padding-left: 50px;
+    flex-grow: 1; /* Allows text to take up available space */
+}
+
+.ayah-text.font-style-2 {
+    font-family: 'Scheherazade New', serif; /* A different font style */
 }
 
 .ayah-text .ayah-number {
@@ -283,14 +303,6 @@ a:hover {
     align-items: center;
     font-weight: bold;
     border: 1px solid var(--primary-color);
-}
-/* New styles for Gemini LLM feature */
-.ayah-text-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
 }
 
 .explain-button {
@@ -323,7 +335,6 @@ a:hover {
     display: none; /* Initially hidden */
 }
 
-/* Style for the translation */
 .ayah-translation {
     margin-top: 15px;
     padding: 15px;
@@ -337,7 +348,6 @@ a:hover {
     display: none; /* Initially hidden */
 }
 
-/* Loading indicator for the explanation */
 .ayah-explanation.loading::before {
     content: "جاري التحميل...";
     color: var(--primary-color);
@@ -345,4 +355,63 @@ a:hover {
     font-size: 1rem;
     text-align: center;
     display: block;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    width: 250px;
+    background-color: var(--card-background);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    align-self: flex-start;
+    position: sticky;
+    top: 90px; /* Offset from the fixed header */
+    max-height: calc(100vh - 110px); /* Adjust for header and margin */
+    overflow-y: auto; /* Enable scrolling for long lists */
+}
+
+.sidebar-title {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ayah-jump-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ayah-jump-list li a {
+    display: block;
+    padding: 8px 0;
+    color: var(--text-gray);
+    transition: color 0.2s ease, background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+.ayah-jump-list li a:hover {
+    color: var(--text-light);
+    background-color: #282828;
+}
+
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        position: static;
+        max-height: none;
+        order: -1; /* Puts the sidebar at the top on mobile */
+    }
+    .surah-header-controls {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
 }
