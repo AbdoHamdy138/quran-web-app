@@ -7,8 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchAllSurahs() {
         try {
             const response = await fetch('http://api.alquran.cloud/v1/surah');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const data = await response.json();
             allSurahs = data.data; // Store the surah list
+            console.log('Successfully fetched and stored', allSurahs.length, 'surahs.');
         } catch (error) {
             console.error('Error fetching surah list:', error);
         }
@@ -16,9 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to render the surah grid based on a filtered list
     function renderSurahGrid(surahsToDisplay) {
-        if (!surahGrid) return; // Prevent errors if the element doesn't exist
+        if (!surahGrid) return;
         
-        // Generate the HTML for the Surah grid items
         const surahGridHtml = surahsToDisplay.map(surah => `
             <a href="/surah/${surah.number}" class="surah-item">
                 <div class="surah-number-container">
@@ -39,15 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleSearch() {
         if (allSurahs.length === 0) {
             // Data not loaded yet, prevent search from running on an empty list
+            console.log('Search attempted, but surah data is not yet loaded.');
             return;
         }
 
-        // Get the search query and convert to lowercase for case-insensitive search
         const query = searchInput.value.toLowerCase();
         
-        // Filter the surah list based on the search query
         const filteredSurahs = allSurahs.filter(surah => {
-            // Check if the query is in the English or Arabic name
             const englishMatch = surah.englishName.toLowerCase().includes(query);
             const arabicMatch = surah.name.toLowerCase().includes(query);
             
@@ -57,20 +58,24 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Search Query:', query);
         console.log('Filtered Surahs:', filteredSurahs);
 
-        // Render the grid with the filtered results
         renderSurahGrid(filteredSurahs);
     }
 
     // Initialize the application
     async function initialize() {
         // Only set up search functionality on pages with the surah grid
-        if (surahGrid) {
+        if (surahGrid && searchInput) {
             await fetchAllSurahs(); // Fetch all surahs initially
             
+            // Render the full grid after the data is fetched.
+            // This is crucial for the search to work correctly.
+            renderSurahGrid(allSurahs);
+
             // Add a 'keyup' event listener to the search input for real-time filtering
-            if (searchInput) {
-                searchInput.addEventListener('keyup', handleSearch);
-            }
+            searchInput.addEventListener('keyup', handleSearch);
+            console.log('Search functionality initialized. Keyup listener attached.');
+        } else {
+            console.log('Search elements not found on this page.');
         }
     }
 
