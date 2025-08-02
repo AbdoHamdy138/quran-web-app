@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to handle the search logic
     function handleSearch() {
+        if (allSurahs.length === 0) {
+            // Data not loaded yet, prevent search from running on an empty list
+            return;
+        }
+
         // Get the search query and convert to lowercase for case-insensitive search
         const query = searchInput.value.toLowerCase();
         
@@ -56,9 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the application
     async function initialize() {
         await fetchAllSurahs(); // Fetch all surahs initially
-        // The server-side render will show all surahs, so we don't need to render initially.
-        // We just need to add the event listener.
         
+        // Render the full grid after the data is fetched. 
+        // This ensures the initial display is handled by the client-side script.
+        renderSurahGrid(allSurahs);
+
         // Add a 'keyup' event listener to the search input for real-time filtering
         if (searchInput) {
             searchInput.addEventListener('keyup', handleSearch);
