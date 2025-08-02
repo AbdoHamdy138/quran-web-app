@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran App</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lateef&family=Scheherazade+New&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="dark-theme">
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="/">Quran App</a>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="ابحث عن سورة (بالعربية أو الإنجليزية)...">
+                <i class="search-icon fas fa-search"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content-grid">
+        <div class="surah-grid">
+            <!-- Surahs will be rendered here by JavaScript -->
+            <% if (surahs && surahs.length > 0) { %>
+                <% surahs.forEach(surah => { %>
+                    <a href="/surah/<%= surah.number %>" class="surah-item">
+                        <div class="surah-number-container">
+                            <span class="surah-number"><%= surah.number %></span>
+                        </div>
+                        <div class="surah-details">
+                            <span class="surah-title-arabic"><%= surah.name %></span>
+                            <span class="surah-title-english"><%= surah.englishName %></span>
+                            <span class="ayah-count"><%= surah.numberOfAyahs %> Ayahs</span>
+                        </div>
+                    </a>
+                <% }); %>
+            <% } else { %>
+                <p>تعذر تحميل قائمة السور.</p>
+            <% } %>
+        </div>
+    </main>
+
+    <script src="/script.js"></script>
+</body>
+</html>
