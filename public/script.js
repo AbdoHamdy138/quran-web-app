@@ -54,21 +54,23 @@ document.addEventListener('DOMContentLoaded', () => {
             return englishMatch || arabicMatch;
         });
 
+        console.log('Search Query:', query);
+        console.log('Filtered Surahs:', filteredSurahs);
+
         // Render the grid with the filtered results
         renderSurahGrid(filteredSurahs);
     }
 
     // Initialize the application
     async function initialize() {
-        await fetchAllSurahs(); // Fetch all surahs initially
-        
-        // Render the full grid after the data is fetched. 
-        // This ensures the initial display is handled by the client-side script.
-        renderSurahGrid(allSurahs);
-
-        // Add a 'keyup' event listener to the search input for real-time filtering
-        if (searchInput) {
-            searchInput.addEventListener('keyup', handleSearch);
+        // Only set up search functionality on pages with the surah grid
+        if (surahGrid) {
+            await fetchAllSurahs(); // Fetch all surahs initially
+            
+            // Add a 'keyup' event listener to the search input for real-time filtering
+            if (searchInput) {
+                searchInput.addEventListener('keyup', handleSearch);
+            }
         }
     }
 
