@@ -1,35 +1,44 @@
-/* Core Colors for Dark Theme */
+/* --- Global Variables and Dark Theme Setup --- */
 :root {
-    --primary-color: #55C57A;
-    --background-dark: #1E1E1E;
-    --card-background: #252526;
-    --text-light: #F0F0F0;
-    --text-gray: #B0B0B0;
-    --border-color: #333;
+    --primary-color: #4CAF50; /* A slightly more classic green */
+    --background-dark: #121212; /* A deeper, cleaner dark background */
+    --card-background: #1E1E1E; /* A subtle lift for card backgrounds */
+    --text-light: #E0E0E0; /* Softer white for better readability */
+    --text-gray: #A0A0A0; /* A clean gray for secondary text */
+    --border-color: #333333; /* Darker border for contrast */
 }
 
-/* Base Styles */
+/* --- Base Styles --- */
 body.dark-theme {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--background-dark);
     color: var(--text-light);
     direction: rtl;
     text-align: right;
+    line-height: 1.6;
 }
 
 a {
     text-decoration: none;
     color: var(--primary-color);
+    transition: color 0.2s ease;
 }
 
-/* Header */
+a:hover {
+    color: #66BB6A;
+}
+
+/* --- Header and Navigation --- */
 .header {
     background-color: var(--card-background);
     color: var(--text-light);
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .header .container {
@@ -44,87 +53,110 @@ a {
 .logo a {
     color: var(--primary-color);
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
 }
 
 .search-bar {
     display: flex;
     align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 400px;
 }
 
 .search-bar input {
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    outline: none;
+    width: 100%;
+    border: 1px solid var(--border-color);
     background-color: var(--background-dark);
     color: var(--text-light);
-    width: 250px;
-    transition: box-shadow 0.2s ease;
+    padding: 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    font-size: 1rem;
 }
 
 .search-bar input:focus {
-    box-shadow: 0 0 5px rgba(85, 197, 122, 0.5);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.4);
 }
 
-.search-bar button {
-    border: none;
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 8px 12px;
-    border-radius: 5px;
+.search-icon {
+    position: absolute;
+    left: 15px;
+    color: var(--text-gray);
+    pointer-events: none;
+    font-size: 1.2rem;
+}
+
+/* Header Controls */
+.surah-header-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.control-button {
+    background-color: var(--card-background);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.2s ease;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.search-bar button:hover {
-    background-color: #42a167;
+.control-button:hover {
+    background-color: #282828;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
-/* Main Content Layouts */
-.main-content-grid {
+/* --- Main Content Layouts --- */
+.main-content-grid, .main-content-single-surah {
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 20px;
 }
 
 .main-content-single-surah {
-    max-width: 900px;
-    margin: 20px auto;
     background-color: var(--card-background);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 40px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
-/* Surah Grid */
+/* --- Surah Grid --- */
 .surah-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
 }
 
 .surah-item {
     background-color: var(--card-background);
     border: 1px solid var(--border-color);
-    border-radius: 8px;
+    border-radius: 12px;
     padding: 1.5rem;
     display: flex;
     align-items: center;
     color: var(--text-light);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .surah-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    transform: translateY(-8px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 25px rgba(76, 175, 80, 0.6);
+    background-color: #282828;
 }
 
 .surah-number-container {
     position: relative;
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     margin-left: 20px;
     display: flex;
     justify-content: center;
@@ -138,7 +170,7 @@ a {
     height: 100%;
     background-color: var(--primary-color);
     transform: rotate(45deg);
-    border-radius: 5px;
+    border-radius: 10px;
     z-index: 1;
 }
 
@@ -147,6 +179,7 @@ a {
     z-index: 2;
     color: var(--background-dark);
     font-weight: bold;
+    font-size: 1.2rem;
 }
 
 .surah-details {
@@ -156,56 +189,60 @@ a {
 }
 
 .surah-title-arabic {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
     color: var(--text-light);
+    font-family: 'Lateef', serif;
 }
 
 .surah-title-english {
-    font-size: 0.9rem;
-    color: var(--text-gray);
-}
-
-.ayah-count {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--text-gray);
     margin-top: 5px;
 }
 
-/* Ayah Display */
+.ayah-count {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-top: 5px;
+}
+
+/* --- Ayah Display --- */
 .surah-info {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .surah-title-arabic h1 {
     font-family: 'Lateef', serif;
-    font-size: 3rem;
+    font-size: 3.5rem;
     margin: 0;
     color: var(--primary-color);
 }
 
-.surah-title-arabic p {
+.surah-title-english p {
     color: var(--text-gray);
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 .surah-details {
     display: flex;
     justify-content: center;
-    gap: 15px;
+    gap: 20px;
     color: var(--text-gray);
-    font-size: 0.9rem;
-    margin-top: 10px;
+    font-size: 1rem;
+    margin-top: 15px;
 }
 
 .bismillah {
     font-family: 'Scheherazade New', serif;
     text-align: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--primary-color);
-    margin-bottom: 40px;
+    margin: 40px 0;
 }
 
 .ayah-container {
@@ -216,33 +253,96 @@ a {
 
 .ayah {
     background-color: var(--card-background);
-    padding: 20px;
-    border-radius: 10px;
+    padding: 25px;
+    border-radius: 12px;
     border-left: 5px solid var(--primary-color);
     line-height: 2;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .ayah-text {
     font-family: 'Lateef', serif;
-    font-size: 1.8rem;
-    line-height: 2.2;
+    font-size: 2rem;
+    line-height: 2.5;
     position: relative;
-    padding-left: 40px;
+    padding-left: 50px;
 }
 
 .ayah-text .ayah-number {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--primary-color);
     position: absolute;
     left: 0;
     top: 5px;
     background-color: var(--background-dark);
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     border: 1px solid var(--primary-color);
+}
+/* New styles for Gemini LLM feature */
+.ayah-text-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.explain-button {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap;
+}
+
+.explain-button:hover {
+    background-color: var(--primary-color);
+    color: var(--background-dark);
+}
+
+.ayah-explanation {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #282828;
+    border-radius: 8px;
+    border-left: 5px solid var(--text-gray);
+    color: var(--text-gray);
+    line-height: 1.8;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    display: none; /* Initially hidden */
+}
+
+/* Style for the translation */
+.ayah-translation {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    border-left: 5px solid #6c757d;
+    color: #ced4da;
+    line-height: 1.8;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    display: none; /* Initially hidden */
+}
+
+/* Loading indicator for the explanation */
+.ayah-explanation.loading::before {
+    content: "جاري التحميل...";
+    color: var(--primary-color);
+    font-style: italic;
+    font-size: 1rem;
+    text-align: center;
+    display: block;
 }
